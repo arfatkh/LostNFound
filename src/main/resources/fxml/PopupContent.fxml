@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="300" prefWidth="300" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.PopupContentController">
+    <Label fx:id="itemNameLabel" text="Item Name: Laptop" />
+    <Label fx:id="descriptionLabel" text="Description: Found a laptop near Block C" />
+    <ImageView fx:id="itemImageView" fitHeight="217.0" fitWidth="255.0" preserveRatio="true">
+        <image>
+            <Image url="@../images/laptop.png" />
+        </image>
+    </ImageView>
+    <!-- Add more content or customize as needed -->
+    <Button fx:id="claimButton" text="Claim" />
+</VBox>

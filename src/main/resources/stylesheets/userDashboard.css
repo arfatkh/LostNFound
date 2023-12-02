@@ -1,0 +1,119 @@
+/* styles.css */
+
+/* General Styling */
+.root {
+    -fx-font-family: Arial, sans-serif;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    -fx-background-color: #f4f4f4;
+    -fx-padding: 20px;
+}
+
+.sidebar-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+/* Heading Styles */
+.heading {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Submit Button Styles */
+.submit-button {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+/* Form Container Styles */
+.form-container {
+    -fx-padding: 20px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+/* Status Bar Styles */
+.status-bar {
+    -fx-background-color: #ecf0f1;
+    -fx-padding: 10px;
+}
+
+.status-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+}
+/* userDashboard.css */
+
+/* Found Items Styles */
+.found-items-container {
+    -fx-padding: 10px;
+}
+
+.found-item {
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-spacing: 5px;
+}
+
+/* Claim Button Styles */
+.claim-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 3px;
+}
+
+.claim-button:hover {
+    -fx-background-color: #2980b9;
+}
+.found-item {
+    -fx-background-color: #f5f5f5;
+    -fx-border-width: 1;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+    -fx-pref-width: 300;
+    -fx-pref-height: 350;
+}
+
+.more-info-content {
+    -fx-spacing: 5;
+    -fx-visible: false;
+}
+
+.more-info-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-padding: 5 10;
+    -fx-border-radius: 3;
+    -fx-font-size: 12px;
+}
+
+.more-info-button:hover {
+    -fx-background-color: #0e74e8;
+}
+/* userDashboard.css */
+
+.item-image {
+    -fx-max-width: 100px;
+    -fx-max-height: 100px;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 100px;
+}

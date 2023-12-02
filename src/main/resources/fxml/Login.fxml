@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.LoginController" stylesheets="@../stylesheets/login.css">
+    <center>
+        <VBox spacing="10" alignment="CENTER" styleClass="login-container">
+            <Label text="Login" styleClass="title-label" />
+            <TextField fx:id="emailField" promptText="Email" styleClass="text-field" />
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field" />
+            <Button fx:id="loginButton" text="Sign In" onAction="#login" styleClass="sign-in-button"  />
+            <Label fx:id="messageLabel" styleClass="error-label" />
+        </VBox>
+    </center>
+</BorderPane>

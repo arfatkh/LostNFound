@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="227.0" prefWidth="359.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.error">
+   <children>
+      <Label layoutX="49.0" layoutY="48.0" prefHeight="118.0" prefWidth="296.0" text="Connection to th DB failed !" textAlignment="CENTER" textFill="#b9acac">
+         <font>
+            <Font name="Baloo 2 Bold" size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
