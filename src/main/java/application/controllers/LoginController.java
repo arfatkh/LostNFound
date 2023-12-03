@@ -38,9 +38,9 @@ public class LoginController {
         messageLabel.setText("");
         // TODO: Implement login authentication
 
-
-        email = "arfat@duck.com";
-        password = "arfat1";
+//
+//        email = "arfat@duck.com";
+//        password = "arfat1";
 //
 //        email = "admin";
 //        password = "admin";
@@ -74,6 +74,7 @@ public class LoginController {
                         Scene scene = new Scene(loader.load());
                         stage.setScene(scene);
                         adminDashboardController controller = loader.<adminDashboardController>getController();
+                        controller.initData(curr_user);
                         stage.show();
 
                     } catch (Exception e) {

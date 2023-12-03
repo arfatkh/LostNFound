@@ -184,13 +184,19 @@
                      <Label styleClass="heading" text="Users" />
                      <Pane prefHeight="771.0" prefWidth="751.0">
                         <children>
-                           <Button layoutX="482.0" layoutY="703.0" mnemonicParsing="false" onAction="#handleUserBan" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: blue;" text="Ban" />
+                           <Button layoutX="482.0" layoutY="703.0" mnemonicParsing="false" onAction="#handleUserBan" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: blue;" text="Ban">
+                              <font>
+                                 <Font size="18.0" />
+                              </font></Button>
                            <Button layoutX="619.0" layoutY="702.0" mnemonicParsing="false" onAction="#handleUserDelete" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
                               <font>
-                                 <Font size="24.0" />
+                                 <Font size="18.0" />
                               </font>
                            </Button>
-                           <Button layoutX="344.0" layoutY="703.0" mnemonicParsing="false" onAction="#handleUserContact" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Contact" />
+                           <Button layoutX="344.0" layoutY="703.0" mnemonicParsing="false" onAction="#handleUserContact" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Contact">
+                              <font>
+                                 <Font size="18.0" />
+                              </font></Button>
 <!--                           <AutoCompleteTextField completerMode="SEARCH_ON_REQUEST" floatText="Search User" layoutX="79.0" layoutY="14.0" prefHeight="56.0" prefWidth="567.0" />-->
                            <ScrollPane layoutX="67.0" layoutY="99.0">
                               <content>
