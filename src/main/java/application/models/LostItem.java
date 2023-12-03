@@ -8,11 +8,23 @@ import java.util.Date;
 public class LostItem extends Item{
 
     private Date lostDate;
+    private User owner;
 
-    public LostItem(String name, String location, String description, ArrayList<String> images, String type, Date lostDate)
+    public LostItem(String name, String location, String description, ArrayList<String> images, Date lostDate,User _owner)
     {
-        super(name, location, description, images, "lost");
+        super(name, location, description, images, "lost",_owner);
         this.lostDate = lostDate;
+        this.owner = new User(_owner.toDocument());
+    }
+
+
+    public LostItem() {
+        super();
+    }
+
+    public LostItem(Document lostItem) {
+        super(lostItem);
+        this.lostDate = lostItem.getDate("lostDate");
     }
 
     public Document toDocument() {

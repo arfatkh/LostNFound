@@ -1,5 +1,6 @@
 package business;
 
+import application.models.FoundReport;
 import application.models.LostReport;
 import application.models.Report;
 import application.models.User;
@@ -17,11 +18,21 @@ public class ReportService {
         this.reportsRepository = new ReportsRepository();
     }
 
-    public Report submitReport(LostReport lostReport) {
-        reportsRepository.ReportsRepository();
-        return reportsRepository.submitReport(lostReport);
+    public Report submitReport(Report report) {
+
+        return reportsRepository.submitReport(report);
 
     }
+
+    public ArrayList<FoundReport> getFoundReports() {
+        return reportsRepository.getFoundReports();
+    }
+
+    public ArrayList<LostReport> getLostReports() {
+        return reportsRepository.getLostReports();
+    }
+
+
 
 
 

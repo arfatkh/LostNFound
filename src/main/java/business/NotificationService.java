@@ -56,10 +56,5 @@ public class NotificationService {
 
 //    void sendReportSubmissionConfirm()
 
-    public static void main(String[] args) {
-        User testUser = new User("Test User", "daf","2424","arfat@duck.com");
-        LostItem lostItem = new LostItem("Test Item", "Test Location", "Test Description", null, "lost", null);
-        LostReport lostReport = new LostReport(testUser, lostItem);
-        sendFoundItemNotification(lostReport);
-    }
+
 }

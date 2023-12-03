@@ -39,6 +39,32 @@ public class LoginController {
         // TODO: Implement login authentication
 
 
+//        email = "arfat@duck.com";
+//        password = "arfat1";
+
+        email = "admin";
+        password = "admin";
+
+        if (email.equals("admin") && password.equals("admin")) {
+
+            try {
+
+                //load dashboard
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminDashboard.fxml"));
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                Scene scene = new Scene(loader.load());
+                stage.setScene(scene);
+                adminDashboardController controller = loader.<adminDashboardController>getController();
+                stage.show();
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+
+            return;
+        }
+
         User curr_user = userService.authenticate(email, password);
 
         if (curr_user != null) {

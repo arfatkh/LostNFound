@@ -18,6 +18,9 @@ public class Item {
 
     private String type;
 
+    private User owner;
+
+
 
 
     //constructor
@@ -25,12 +28,13 @@ public class Item {
     public Item() {
     }
 
-    public Item(String name, String location, String description, ArrayList<String> images, String type) {
+    public Item(String name, String location, String description, ArrayList<String> images, String type,User _owner) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.images = images;
         this.type = type;
+        this.owner = _owner;
     }
 
     //constructor for the item from the databased document
@@ -40,13 +44,32 @@ public class Item {
         this.location = document.getString("location");
         this.description = document.getString("description");
         this.images = (ArrayList<String>) document.get("images");
+        this.type = document.getString("type");
+        this.owner = new User(document.get("owner",Document.class));
 
+
+
+
+
+
+
+    }
+
+    public Item(Item item) {
+        this.name = item.getName();
+        this.location = item.getLocation();
+        this.description = item.getDescription();
+        this.images = item.getImages();
+        this.type = item.getType();
     }
 
 
 
 
     // Getters and setters
+    public String getType() {
+        return type;
+    }
     public String getName() {
         return name;
     }
@@ -57,6 +80,12 @@ public class Item {
         return description;
     }
     public ArrayList<String> getImages() {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+        //placeholder
+        images.add("https://via.placeholder.com/300");
+
         return images;
     }
     public String getItemID() {
@@ -89,6 +118,12 @@ public class Item {
         document.append("location", location);
         document.append("description", description);
         document.append("images", images);
+        document.append("type", type);
+        if (owner != null)
+            document.append("owner",owner.toDocument());
+        else document.append("owner",null);
+
+
         return document;
     }
 
@@ -100,6 +135,8 @@ public class Item {
         System.out.println("Location: " + location);
         System.out.println("Description: " + description);
         System.out.println("Images: " + images);
+        System.out.println("Type: " + type);
+
     }
 
 

@@ -10,18 +10,25 @@ public class FoundItem extends Item {
 
     //date found
     private Date dateFound;
-    private User finder;
-    private User owner;
 
-    private String foundLocation;
+
 
     //constructor
-    public FoundItem(String name, String location, String description, Date dateFound, User finder, String foundLocation, ArrayList<String> images) {
-        super(name, location, description, images, "found");
-
+    public FoundItem(String name, String location, String description, ArrayList<String> images, Date dateFound,User owner) {
+        super(name, location, description, images, "found",owner);
         this.dateFound = dateFound;
-        this.finder = finder;
-        this.foundLocation = foundLocation;
+    }
+
+    //public constructor
+
+
+    public FoundItem(Item item, Date dateFound) {
+        super(item);
+        this.dateFound = dateFound;
+    }
+
+    public FoundItem() {
+        super();
     }
 
     //constructor for the item from the databased document
@@ -29,10 +36,6 @@ public class FoundItem extends Item {
     {
         super(document);
         this.dateFound = document.getDate("dateFound");
-        this.finder = new User((Document) document.get("finder"));
-        this.foundLocation = document.getString("foundLocation");
-        this.owner = new User((Document) document.get("owner"));
-
 
     }
 
@@ -41,23 +44,12 @@ public class FoundItem extends Item {
     public Date getDateFound() {
         return dateFound;
     }
-    public User getFinder() {
-        return finder;
-    }
-    public String getFoundLocation() {
-        return foundLocation;
-    }
-    public User getOwner() {
-        return owner;
-    }
 
     //to convert the item to a document
     public Document toDocument() {
         Document document = super.toDocument();
         document.append("dateFound", dateFound);
-        document.append("finder", finder.toDocument());
-        document.append("foundLocation", foundLocation);
-        document.append("owner", owner.toDocument());
+
         return document;
     }
 

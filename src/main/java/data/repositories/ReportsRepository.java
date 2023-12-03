@@ -2,20 +2,17 @@ package data.repositories;
 
 
 
-import application.models.LostItem;
-import application.models.LostReport;
-import application.models.User;
+import application.models.*;
 import data.connection;
-import application.models.Report;
 //mongodb imports
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ReportsRepository {
 
@@ -26,14 +23,14 @@ public class ReportsRepository {
 
     //main function to test the connection
 
-    public void ReportsRepository() {
+    public ReportsRepository() {
         this.connection = new connection();
         this.mongoClient = connection.getMongoClient();
 
         MongoDatabase database = mongoClient.getDatabase("lostNFound");
         this.reports = database.getCollection("reports");
 
-        MongoCollection reports1 = database.getCollection("reports");
+        MongoCollection<Document> reports1 = database.getCollection("reports");
 
         //prtint users
         for (Object user : reports1.find()) {
@@ -42,11 +39,11 @@ public class ReportsRepository {
 
     }
 
-        public Report submitReport(LostReport report) {
+        public Report submitReport(Report report) {
 
                 Document document = report.toDocument();
 
-                String reportID = reports.insertOne(document).getInsertedId().toString();
+                String reportID = Objects.requireNonNull(reports.insertOne(document).getInsertedId()).toString();
 
                 report.setReportID(reportID);
                 return report;
@@ -58,6 +55,36 @@ public class ReportsRepository {
                 System.out.println(report);
             }
         }
+
+
+
+       public ArrayList<FoundReport> getFoundReports()
+       {
+              ArrayList<FoundReport> foundReports = new ArrayList<FoundReport>();
+
+              for (Document document : reports.find(Filters.eq("type", "found"))) {
+                foundReports.add(new FoundReport(document));
+              }
+
+              return foundReports;
+       }
+
+         public ArrayList<LostReport> getLostReports()
+         {
+                  ArrayList<LostReport> lostReports = new ArrayList<LostReport>();
+
+                  for (Document document : reports.find(Filters.eq("type", "lost"))) {
+                 lostReports.add(new LostReport(document));
+                  }
+
+                  return lostReports;
+         }
+
+
+
+
+
+
 
 //        public  static void main(String[] args) {
 //            ReportsRepository reportsRepository = new ReportsRepository();

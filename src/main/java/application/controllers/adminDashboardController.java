@@ -1,13 +1,15 @@
 package application.controllers;
 
 import application.models.*;
+import application.utils.UIutils;
+import business.ReportService;
+import data.imageUpload;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,16 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
-import application.utils.UIutils;
-import data.imageUpload;
-
-//for Alert
-import javafx.scene.control.Alert;
-
-
-import business.ReportService;
-
-public class userDashboardController {
+public class adminDashboardController {
 
     @FXML
     private Button submitReportButton;
@@ -63,7 +56,7 @@ public class userDashboardController {
 
     //for found items list
     @FXML
-    private FlowPane foundItemContainer;
+    private ListView foundItemContainer;
 
     @FXML
     private Tab foundItemTab;
@@ -83,7 +76,7 @@ public class userDashboardController {
         foundItemTab.setOnSelectionChanged(event -> {
             if (foundItemTab.isSelected()) {
 
-                foundItemContainer.getChildren().clear();
+//                foundItemContainer.getChildren().clear();
 
                 // Logic for handling found items
                 ArrayList<FoundReport> reports = reportService.getFoundReports();
@@ -100,7 +93,7 @@ public class userDashboardController {
                         controller.setItemData(report.getReportID(), report.getFoundItem().getName(), report.getFoundItem().getDescription(), report.getFoundItem().getImages().get(0), report.getFoundItem().getDateFound(), report.getFoundItem().getLocation());
 
 
-                        foundItemContainer.getChildren().add(itemCard);
+//                        foundItemContainer.getChildren().add(itemCard);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -11,9 +11,17 @@ public class LostReport extends Report{
         this.lostItem = lostItem;
     }
 
+    public LostReport(Document document)
+    {
+        super(document);
+        this.lostItem = new LostItem((Document) document.get("lostItem"));
+    }
+
     public LostReport() {
         super();
     }
+
+
 
     public Document toDocument() {
         Document document = super.toDocument();
