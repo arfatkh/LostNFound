@@ -120,6 +120,35 @@ ArrayList<Report> pendingReports = new ArrayList<Report>();
 
     }
 
+    public ArrayList<LostReport> getApprovedLostReports() {
+        ArrayList<LostReport> lostReports = new ArrayList<LostReport>();
+
+        //status approved
+        for (Document document : reports.find(Filters.and(Filters.eq("type", "lost"), Filters.eq("status", "approved")))) {
+            lostReports.add(new LostReport(document));
+        }
+
+        return lostReports;
+    }
+
+    public ArrayList<Report> getReports() {
+        ArrayList<Report> reports = new ArrayList<Report>();
+
+        for (Document document : this.reports.find()) {
+//            if doucment has no status
+            if (!document.containsKey("status") ||! document.getString("status").equals("approved")) {
+
+                continue;
+            }
+            if (document.getString("type").equals("found")) {
+                reports.add(new FoundReport(document));
+            } else {
+                reports.add(new LostReport(document));
+            }
+        }
+
+        return reports;
+    }
 
 //        public  static void main(String[] args) {
 //            ReportsRepository reportsRepository = new ReportsRepository();

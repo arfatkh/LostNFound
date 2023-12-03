@@ -30,7 +30,7 @@ public class LostReport extends Report{
     }
 
 
-    public Item getLostItem() {
+    public LostItem getLostItem() {
         return lostItem;
     }
 }

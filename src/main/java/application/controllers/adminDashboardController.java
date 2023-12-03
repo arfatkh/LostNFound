@@ -2,17 +2,23 @@ package application.controllers;
 
 import application.models.*;
 import application.utils.UIutils;
+import business.NotificationService;
 import business.ReportService;
+import business.UserService;
 import data.imageUpload;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -20,12 +26,22 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class adminDashboardController {
 
+    @FXML
+    public TableView<User> userTable;
+    @FXML private TableColumn<User, String> userEmail;
+    @FXML private TableColumn<User, String> userPassword;
+    @FXML private TableColumn<User, String> userStatus;
+    @FXML private TableColumn<User, String> userType;
+
+    @FXML
+    public Tab userTab;
     @FXML
     private Button submitReportButton;
 
@@ -82,11 +98,28 @@ public class adminDashboardController {
     private Button rejectButton;
 
 
+    @FXML
+    private ImageView itemImageViewReport;
+    @FXML private Label itemNameViewReport;
+    @FXML private ListView reportsListView;
+    @FXML private Tab viewReportsTab;
+
+
+
+    ArrayList<User> usersList;
+    ArrayList<Report> reportsList;
+
+
+    private NotificationService notificationService = new NotificationService();
+
+
+
 
 
 
     User currentAuthenticatedUser;
     ReportService reportService = new ReportService();
+    UserService userService = new UserService();
 
     ArrayList<String> ImageURLs = new ArrayList<String>();
 
@@ -95,6 +128,32 @@ public class adminDashboardController {
     @FXML
     private void initialize() {
         // Initialize the controller (if needed)
+
+        userTab.setOnSelectionChanged(event -> {
+            if (userTab.isSelected()) {
+
+                ///table columns are
+                //email, password, name, status
+                userTable.getItems().clear();
+
+                usersList = userService.getUsers();
+
+                //settting up the columns
+                userEmail.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
+                userPassword.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
+                userStatus.setCellValueFactory(new PropertyValueFactory<User, String>("status"));
+                userType.setCellValueFactory(new PropertyValueFactory<User, String>("type"));
+
+                userTable.getItems().setAll(usersList);
+
+//
+
+
+
+
+
+            }
+        });
 
         foundItemContainer.setOnMouseClicked(this::handleItemSelection);
 
@@ -106,6 +165,13 @@ public class adminDashboardController {
         });
 
 
+        reportsListView.setOnMouseClicked(this::handleItemSelectionView);
+        reportsListView.setOnKeyPressed(keyEvent -> {
+            //if up or down arrow is pressed
+            if (keyEvent.getCode().equals(KeyCode.UP) || keyEvent.getCode().equals(KeyCode.DOWN)) {
+                handleItemSelectionView(keyEvent);
+            }
+        });
 
 
         foundItemTab.setOnSelectionChanged(event -> {
@@ -144,6 +210,63 @@ public class adminDashboardController {
         });
 
 
+        viewReportsTab.setOnSelectionChanged(event -> {
+            if (viewReportsTab.isSelected()) {
+
+                reportsListView.getItems().clear();
+                reportsList = reportService.getReports();
+
+                for (Report report : reportsList) {
+                    if (report.getType().equals("found")) {
+                        FoundReport foundReport = (FoundReport) report;
+                        reportsListView.getItems().add(foundReport.getFoundItem().getName());
+                    } else if (report.getType().equals("lost")) {
+                        LostReport lostReport = (LostReport) report;
+                        reportsListView.getItems().add(lostReport.getLostItem().getName());
+                    }
+                }
+
+            }
+        });
+
+
+
+
+
+    }
+
+    private void handleItemSelectionView(Event event) {
+        //clear the previous data
+
+        //get the selected item
+        int selectedIndex = reportsListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        Report selectedReport = reportsList.get(selectedIndex);
+
+        String itemName = "";
+        String itemImage = "";
+        String itemDescription = "";
+        String itemLocation = "";
+
+        if (selectedReport.getType().equals("found")) {
+            FoundReport foundReport = (FoundReport) selectedReport;
+            itemName = foundReport.getFoundItem().getName();
+            itemImage = foundReport.getFoundItem().getImages().get(0);
+            itemDescription = foundReport.getFoundItem().getDescription();
+            itemLocation = foundReport.getFoundItem().getLocation();
+        } else if (selectedReport.getType().equals("lost")) {
+            LostReport lostReport = (LostReport) selectedReport;
+            itemName = lostReport.getLostItem().getName();
+            itemImage = lostReport.getLostItem().getImages().get(0);
+            itemDescription = lostReport.getLostItem().getDescription();
+            itemLocation = lostReport.getLostItem().getLocation();
+        }
+
+        itemNameViewReport.setText(itemName);
+        itemImageViewReport.setImage(new javafx.scene.image.Image(itemImage));
 
 
     }
@@ -353,6 +476,102 @@ public class adminDashboardController {
             System.out.println("Report rejection failed");
             UIutils.showAlert(Alert.AlertType.ERROR, "Error", "Report Rejection Failed", "Report rejection failed");
         }
+
+    }
+
+    public void handleUserBan()
+    {
+        int selectedIndex = userTable.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        User selectedUser = usersList.get(selectedIndex);
+
+        System.out.println("Banned; "+ selectedUser);
+
+        selectedUser.setStatus("banned");
+
+        User res = userService.updateUser(selectedUser.getEmail(),selectedUser);
+
+
+        if (res != null) {
+            System.out.println("User banned successfully");
+            UIutils.showAlert(Alert.AlertType.INFORMATION, "Success", "User Banned Successfully", "User banned successfully");
+
+        } else {
+            System.out.println("User ban failed");
+            UIutils.showAlert(Alert.AlertType.ERROR, "Error", "User Ban Failed", "User ban failed");
+        }
+
+
+    }
+
+    public void handleUserDelete(ActionEvent actionEvent) {
+
+        int selectedIndex = userTable.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        userService.deleteUser(usersList.get(selectedIndex).getEmail());
+
+userTable.getItems().remove(selectedIndex);
+
+UIutils.showAlert(Alert.AlertType.INFORMATION, "Success", "User Deleted Successfully", "User deleted successfully");
+
+
+    }
+
+    public void handleUserContact(ActionEvent actionEvent) throws UnsupportedEncodingException {
+        int selectedIndex = userTable.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        User selectedUser = usersList.get(selectedIndex);
+
+        System.out.println("Contacted; "+ selectedUser);
+
+        //open mailTo link
+        String email = selectedUser.getEmail();
+        String subject = "Regarding your account";
+        String encodedS = java.net.URLEncoder.encode(subject,"UTF-8");
+
+        String mailTo = "mailto:" + email + "?subject=" + encodedS;
+
+        //open in default browser
+        try {
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(mailTo));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void markAsSolvedHandler(ActionEvent actionEvent) {
+
+        int selectedIndex = reportsListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        Report selectedReport = reportsList.get(selectedIndex);
+
+        Report res = reportService.setReportStatus(selectedReport.getReportID(), "completed");
+
+        if (res != null) {
+            System.out.println("Report marked as solved successfully");
+            UIutils.showAlert(Alert.AlertType.INFORMATION, "Success", "Report Marked as Solved Successfully", "Report marked as solved successfully");
+            notificationService.sendNotification(selectedReport.getReporter().getEmail(), "Your report has been marked as solved", "Your report has been marked as solved");
+
+        } else {
+            System.out.println("Report marking as solved failed");
+            UIutils.showAlert(Alert.AlertType.ERROR, "Error", "Report Marking as Solved Failed", "Report marking as solved failed");
+        }
+
 
     }
 

@@ -35,4 +35,7 @@ public class LostItem extends Item{
         return document;
     }
 
+    public Date getLostDate() {
+        return lostDate;
+    }
 }

@@ -68,6 +68,9 @@ public class userDashboardController {
     @FXML
     private Tab foundItemTab;
 
+    @FXML
+    private ChoiceBox viewReportType;
+
 
 
 
@@ -80,37 +83,17 @@ public class userDashboardController {
     private void initialize() {
         // Initialize the controller (if needed)
 
+//        viewReportType is selected or changed
+        viewReportType.setOnAction(event -> {
+            manageViewReportTypeChanged();
+                });
+
         foundItemTab.setOnSelectionChanged(event -> {
             if (foundItemTab.isSelected()) {
 
-                foundItemContainer.getChildren().clear();
-
-                // Logic for handling found items
-                ArrayList<FoundReport> reports = reportService.getApprovedFoundReports();
-
-                for (FoundReport report : reports) {
-
-
-
-
-                    System.out.println(report);
-                    // Create a new item card
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ItemCard.fxml"));
-                        VBox itemCard = loader.load();
-
-                        itemCardController controller = loader.getController();
-
-                        controller.setItemData(report.getReportID(), report.getFoundItem().getName(), report.getFoundItem().getDescription(), report.getFoundItem().getImages().get(0), report.getFoundItem().getDateFound(), report.getFoundItem().getLocation());
-
-
-                        foundItemContainer.getChildren().add(itemCard);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
+                //set the default value of the choice box
+                viewReportType.setValue("found");
+                manageViewReportTypeChanged();
 
             }
         });
@@ -120,7 +103,72 @@ public class userDashboardController {
 
     }
 
+    private void manageViewReportTypeChanged() {
 
+
+        System.out.println("View report type changed");
+        foundItemContainer.getChildren().clear();
+        String type = viewReportType.getValue().toString();
+
+
+        if (type.equals(("found")))
+        {
+            // Logic for handling found items
+            ArrayList<FoundReport> reports = reportService.getApprovedFoundReports();
+
+            for (FoundReport report : reports) {
+
+
+
+
+                System.out.println(report);
+                // Create a new item card
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ItemCard.fxml"));
+                    VBox itemCard = loader.load();
+
+                    itemCardController controller = loader.getController();
+
+                    controller.setItemData(report.getReportID(), report.getFoundItem().getName(), report.getFoundItem().getDescription(), report.getFoundItem().getImages().get(0), report.getFoundItem().getDateFound(), report.getFoundItem().getLocation());
+
+
+                    foundItemContainer.getChildren().add(itemCard);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+        else if (type.equals(("lost"))) {
+            // Logic for handling found items
+            ArrayList<LostReport> reports = reportService.getApprovedLostReports();
+
+            for (LostReport report : reports) {
+                System.out.println(report);
+                // Create a new item card
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ItemCard.fxml"));
+                    VBox itemCard = loader.load();
+
+                    itemCardController controller = loader.getController();
+
+                    controller.setItemData(report.getReportID(), report.getLostItem().getName(), report.getLostItem().getDescription(), report.getLostItem().getImages().get(0), report.getLostItem().getLostDate(), report.getLostItem().getLocation());
+
+                    foundItemContainer.getChildren().add(itemCard);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
+
+        }
+
+
+
+
+    }
 
 
     public void initData(User user) {
@@ -274,28 +322,7 @@ public class userDashboardController {
     }
 
 
-//    public void handleViewFoundItems() {
-//        // Logic for handling found items
-//        System.out.println("Loading found items");
-//
-//        ArrayList<Report> reports = reportService.getReportsByType("lost");
-//
-//        for (Report report : reports) {
-//            System.out.println(report);
-//            // Create a new item card
-//            try {
-//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ItemCard.fxml"));
-//                HBox itemCard = loader.load();
-//
-//                ItemCardController controller = loader.getController();
-//                controller.setItemData(report);
-//
-//                foundItemContainer.getChildren().add(itemCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+
 
     // Other methods and code
 }

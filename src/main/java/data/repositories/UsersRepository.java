@@ -12,6 +12,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import org.bson.Document;
 
+import java.util.ArrayList;
+
 public class UsersRepository {
 
     connection connection;
@@ -20,7 +22,7 @@ public class UsersRepository {
 
     //main function to test the connection
 
-    public void UsersRepository() {
+    public  UsersRepository() {
         this.connection = new connection();
         this.mongoClient = connection.getMongoClient();
 
@@ -99,10 +101,36 @@ public class UsersRepository {
 
     }
 
-    public void printUsers() {
-        for (Object user : users.find()) {
-            System.out.println(user);
+    public ArrayList<User> getUsers() {
+
+        ArrayList<User> usersList = new ArrayList<User>();
+
+        for (Document document : users.find()) {
+            usersList.add(new User(document));
         }
+
+        return usersList;
+
     }
 
+    public User updateUser(String email, User user_) {
+
+        Document _user = users.find(Filters.eq("email", email)).first();
+        User curr_user = new User((Document) _user);
+
+        if (curr_user != null) {
+            users.replaceOne(Filters.eq("email", email), user_.toDocument());
+            return user_;
+        } else {
+            return null;
+        }
+
+    }
+
+
+    public void deleteUser(String email) {
+
+
+        users.deleteOne(Filters.eq("email", email));
+    }
 }

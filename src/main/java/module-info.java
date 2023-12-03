@@ -8,9 +8,12 @@ module com.example.demo6 {
     requires cloudinary.http44;
     requires cloudinary.core;
     requires java.net.http;
+    requires java.desktop;
 
     opens application.controllers to javafx.fxml;
     exports application;
+    opens application.models to javafx.base, javafx.fxml;
+
 
     // ...
 }

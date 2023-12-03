@@ -11,7 +11,7 @@ public class Report {
 
     private Date reportDate;
 
-    private String status; //pending, approved, rejected ,found, lost
+    private String status; //pending, approved, rejected , completed
 
 
     //constructor
@@ -65,7 +65,6 @@ public class Report {
         document.append("type", type);
         document.append("reportDate", reportDate);
         document.append("status", status);
-        document.append("_id", reportID);
         return document;
     }
 

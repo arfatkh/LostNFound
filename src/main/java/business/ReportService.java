@@ -42,10 +42,10 @@ public class ReportService {
 
 
 
-    public void getReport() {
-    }
 
-    public void getReports() {
+
+    public ArrayList<Report> getReports() {
+        return reportsRepository.getReports();
     }
 
     public void updateReport() {
@@ -57,5 +57,9 @@ public class ReportService {
 
     public ArrayList<Report> getPendingReports() {
         return reportsRepository.getPendingReports();
+    }
+
+    public ArrayList<LostReport> getApprovedLostReports() {
+        return reportsRepository.getApprovedLostReports();
     }
 }

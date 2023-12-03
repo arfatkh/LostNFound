@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import data.repositories.UsersRepository;
 import application.utils.UIutils;
 
+import java.util.ArrayList;
 
 
 public class UserService {
@@ -18,7 +19,6 @@ public class UserService {
 
     public User authenticate(String email, String password) {
 
-        usersRepository.UsersRepository();
 
         return usersRepository.authenticate(email, password);
 
@@ -32,7 +32,6 @@ public class UserService {
         // Save the user to the database or any other storage
         // ...
 
-        usersRepository.UsersRepository();
 
 
         User curr_user = usersRepository.register(user);
@@ -52,5 +51,16 @@ public class UserService {
 
     }
 
+    public ArrayList<User> getUsers() {
+        return usersRepository.getUsers();
+    }
 
+    public User updateUser(String email,User user) {
+        return usersRepository.updateUser(email,user);
+    }
+
+
+    public void deleteUser(String email) {
+        usersRepository.deleteUser(email);
+    }
 }

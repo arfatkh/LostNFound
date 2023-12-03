@@ -3,6 +3,7 @@ import application.models.User;
 import org.bson.Document;
 //list of imports
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Item {
 
@@ -42,6 +43,8 @@ public class Item {
     //constructor for the item from the databased document
     public Item(Document document)
     {
+
+
         this.name = document.getString("name");
         this.location = document.getString("location");
         this.description = document.getString("description");
@@ -145,4 +148,5 @@ public class Item {
     public String getImageURL() {
         return images.get(0);
     }
+
 }

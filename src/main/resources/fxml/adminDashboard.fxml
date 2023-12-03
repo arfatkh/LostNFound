@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--<?import com.gluonhq.charm.glisten.control.AutoCompleteTextField?>-->
+
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
@@ -12,6 +14,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -24,7 +28,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane stylesheets="@../stylesheets/userDashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.adminDashboardController">
+<BorderPane prefHeight="1027.0" prefWidth="957.0" stylesheets="@../stylesheets/userDashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.adminDashboardController">
 
         <!-- Left Sidebar -->
         <left>
@@ -72,19 +76,29 @@
                             <Label text="Selected Files" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                             <ListView fx:id="fileList" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                            <Button onAction="#submitReport" styleClass="submit-button" text="Submit" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-                  <ComboBox fx:id="reportType" prefWidth="150.0" promptText="Type" GridPane.rowIndex="2">
-                      <items>
-                          <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="found" />
-                              <String fx:value="lost" />
-                              <!-- Add more options as needed -->
-                          </FXCollections>
-                      </items>
-
-                    </ComboBox>
-
                         </GridPane>
+               <Pane minHeight="-Infinity" prefHeight="100.0" prefWidth="731.0">
+                  <children>
+   
+                                  <Button layoutX="254.0" layoutY="38.0" onAction="#submitReport" styleClass="submit-button" text="Submit" />
+                     <ComboBox fx:id="reportType" layoutX="220.0" layoutY="4.0" prefWidth="150.0" promptText="Type">
+                         <items>
+                             <FXCollections fx:factory="observableArrayList">
+                                 <String fx:value="found" />
+                                 <String fx:value="lost" />
+                                 <!-- Add more options as needed -->
+                             </FXCollections>
+                         </items>
+      
+                       </ComboBox>
+                  </children>
+                  <padding>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding>
+                  <VBox.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </VBox.margin>
+               </Pane>
                     </VBox>
                 </Tab>
 
@@ -100,7 +114,7 @@
                               <children>
                                  <ListView fx:id="foundItemContainer" prefHeight="561.0" prefWidth="210.0">
                                      <items>
-                                         <FXCollections  fx:factory="observableArrayList">
+                                         <FXCollections fx:factory="observableArrayList">
 
 
                                              <!-- Add more options as needed -->
@@ -109,9 +123,9 @@
                                     <padding>
                                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                                     </padding>
-            
-            
-            
+
+
+
                                  </ListView>
                               </children>
                            </AnchorPane>
@@ -153,8 +167,8 @@
                </SplitPane>
                <Pane prefHeight="200.0" prefWidth="200.0">
                   <children>
-                     <Button onAction="#handleApproveButton" layoutX="415.0" layoutY="116.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Approve" />
-                     <Button  onAction="#handleRejectButton" layoutX="552.0" layoutY="115.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: red;" text="Reject" textFill="WHITE">
+                     <Button layoutX="415.0" layoutY="116.0" mnemonicParsing="false" onAction="#handleApproveButton" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Approve" />
+                     <Button layoutX="552.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleRejectButton" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: red;" text="Reject" textFill="WHITE">
                         <font>
                            <Font size="24.0" />
                         </font>
@@ -163,6 +177,118 @@
                </Pane>
                     </VBox>
                 </Tab>
+         <Tab fx:id="userTab" text="Users">
+            <content>
+               <VBox prefHeight="846.0" prefWidth="771.0" spacing="10" style="-fx-padding: 10;">
+                  <children>
+                     <Label styleClass="heading" text="Users" />
+                     <Pane prefHeight="771.0" prefWidth="751.0">
+                        <children>
+                           <Button layoutX="482.0" layoutY="703.0" mnemonicParsing="false" onAction="#handleUserBan" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: blue;" text="Ban" />
+                           <Button layoutX="619.0" layoutY="702.0" mnemonicParsing="false" onAction="#handleUserDelete" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Button>
+                           <Button layoutX="344.0" layoutY="703.0" mnemonicParsing="false" onAction="#handleUserContact" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Contact" />
+<!--                           <AutoCompleteTextField completerMode="SEARCH_ON_REQUEST" floatText="Search User" layoutX="79.0" layoutY="14.0" prefHeight="56.0" prefWidth="567.0" />-->
+                           <ScrollPane layoutX="67.0" layoutY="99.0">
+                              <content>
+                                 <TableView fx:id="userTable" prefHeight="491.0" prefWidth="636.0">
+                                   <columns>
+                                     <TableColumn fx:id="userEmail" prefWidth="111.0" text="Email" />
+                                     <TableColumn fx:id="userPassword" prefWidth="96.0" text="Password" />
+                                       <TableColumn fx:id="userType" prefWidth="75.0" text="Type" />
+                                       <TableColumn fx:id="userStatus" prefWidth="75.0" text="Status" />
+
+
+
+                                   </columns>
+
+<!--                                     rows-->
+
+
+
+
+
+                                 </TableView>
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </Pane>
+                  </children>
+               </VBox>
+            </content>
+         </Tab>
+         <Tab fx:id="viewReportsTab" text="View Reports">
+            <content>
+               <VBox prefHeight="846.0" prefWidth="771.0" spacing="10" style="-fx-padding: 10;">
+                  <children>
+                     <Label styleClass="heading" text="Reports" />
+                     <SplitPane dividerPositions="0.5" prefHeight="568.0" prefWidth="751.0">
+                        <items>
+                           <ScrollPane fitToWidth="true" minWidth="-Infinity" prefHeight="531.0" prefWidth="200.0">
+                              <content>
+                                 <AnchorPane minHeight="0.0" minWidth="264.0" prefHeight="578.0" prefWidth="311.0">
+                                    <children>
+                                       <ListView fx:id="reportsListView" prefHeight="561.0" prefWidth="358.0">
+                                          <items>
+                                             <FXCollections fx:factory="observableArrayList" />
+                                          </items>
+                                          <padding>
+                                             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                                          </padding>
+                                       </ListView>
+                                    </children>
+                                 </AnchorPane>
+                              </content>
+                           </ScrollPane>
+                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="566.0" prefWidth="404.0">
+                              <children>
+                                 <ImageView fx:id="itemImageViewReport" fitHeight="198.0" fitWidth="346.0" layoutX="14.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" />
+                                 <Label fx:id="itemNameViewReport" layoutX="134.0" layoutY="294.0" prefHeight="35.0" prefWidth="166.0" text="Item Name">
+                                    <font>
+                                       <Font size="19.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="70.0" layoutY="329.0" prefHeight="35.0" prefWidth="166.0" text="Location">
+                                    <font>
+                                       <Font size="19.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="68.0" layoutY="373.0" prefHeight="101.0" prefWidth="297.0" text="Description">
+                                    <font>
+                                       <Font size="19.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="69.0" layoutY="453.0" prefHeight="35.0" prefWidth="220.0" text="Reporter">
+                                    <font>
+                                       <Font size="19.0" />
+                                    </font>
+                                 </Label>
+                                 <Label layoutX="70.0" layoutY="493.0" prefHeight="35.0" prefWidth="220.0" text="Type">
+                                    <font>
+                                       <Font size="19.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </items>
+                     </SplitPane>
+                     <Pane prefHeight="200.0" prefWidth="200.0">
+                        <children>
+                           <Button layoutX="415.0" layoutY="116.0" mnemonicParsing="false" onAction="#markAsSolvedHandler" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Mark as solved" />
+                           <Button layoutX="552.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleRejectButton" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Button>
+                        </children>
+                     </Pane>
+                  </children>
+               </VBox>
+            </content>
+         </Tab>
 
 
 
@@ -175,13 +301,15 @@
                     <TextArea editable="false" prefHeight="200" />
                 </Tab>
 
+
+
                 <!-- Other Tabs for different functionalities -->
             </TabPane>
         </center>
 
         <!-- Bottom Section -->
         <bottom>
-            <VBox styleClass="status-bar">
+            <VBox prefHeight="34.0" prefWidth="957.0" styleClass="status-bar">
 <!--                <Label styleClass="status-label" text="Status: Connected" />-->
 <!--                username-->
                 <Label fx:id="usernameLabel" prefHeight="16.0" prefWidth="133.0" styleClass="status-label" text="ADMIN PANEL" />

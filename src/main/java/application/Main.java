@@ -15,7 +15,7 @@ public class Main extends Application {
 
         connection connection = new connection();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Signup.fxml"));
 //        Parent root = FXMLLoader.load(getClass().getResource("/fxml/userDashboard.fxml"));
 
 
