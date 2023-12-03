@@ -34,7 +34,9 @@ public class Item {
         this.description = description;
         this.images = images;
         this.type = type;
-        this.owner = _owner;
+        if (_owner != null)
+            this.owner = new User(_owner.toDocument());
+        else this.owner = null;
     }
 
     //constructor for the item from the databased document

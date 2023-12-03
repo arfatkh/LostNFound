@@ -86,9 +86,13 @@ public class userDashboardController {
                 foundItemContainer.getChildren().clear();
 
                 // Logic for handling found items
-                ArrayList<FoundReport> reports = reportService.getFoundReports();
+                ArrayList<FoundReport> reports = reportService.getApprovedFoundReports();
 
                 for (FoundReport report : reports) {
+
+
+
+
                     System.out.println(report);
                     // Create a new item card
                     try {

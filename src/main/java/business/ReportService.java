@@ -24,12 +24,16 @@ public class ReportService {
 
     }
 
-    public ArrayList<FoundReport> getFoundReports() {
-        return reportsRepository.getFoundReports();
+    public ArrayList<FoundReport> getApprovedFoundReports() {
+        return reportsRepository.getApprovedFoundReports();
     }
 
     public ArrayList<LostReport> getLostReports() {
         return reportsRepository.getLostReports();
+    }
+
+    public Report setReportStatus(String reportID, String status) {
+        return reportsRepository.setReportStatus(reportID, status);
     }
 
 
@@ -51,5 +55,7 @@ public class ReportService {
     }
 
 
-
+    public ArrayList<Report> getPendingReports() {
+        return reportsRepository.getPendingReports();
+    }
 }

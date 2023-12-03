@@ -2,11 +2,13 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -87,23 +89,40 @@
                 </Tab>
 
 
-                <Tab fx:id="foundItemTab" text="Reports">
+                <Tab fx:id="foundItemTab" text="Pending Reports">
                     <VBox prefHeight="846.0" prefWidth="771.0" spacing="10" style="-fx-padding: 10;">
                         <Label styleClass="heading" text="Reports" />
                <SplitPane dividerPositions="0.29797979797979796" prefHeight="568.0" prefWidth="751.0">
                  <items>
-                     <ListView fx:id="foundItemContainer" prefHeight="566.0" prefWidth="239.0" >
+                     <ScrollPane fitToWidth="true" prefHeight="531.0" prefWidth="175.0">
+                       <content>
+                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="578.0" prefWidth="227.0">
+                              <children>
+                                 <ListView fx:id="foundItemContainer" prefHeight="561.0" prefWidth="210.0">
+                                     <items>
+                                         <FXCollections  fx:factory="observableArrayList">
 
 
-
-
-                     </ListView>
+                                             <!-- Add more options as needed -->
+                                         </FXCollections>
+                                     </items>
+                                    <padding>
+                                       <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                                    </padding>
+            
+            
+            
+                                 </ListView>
+                              </children>
+                           </AnchorPane>
+                       </content>
+                     </ScrollPane>
 
 
                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="657.0" prefWidth="522.0">
                         <children>
-                           <ImageView fitHeight="198.0" fitWidth="346.0" layoutX="91.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
-                           <Label layoutX="187.0" layoutY="288.0" prefHeight="35.0" prefWidth="166.0" text="Item Name">
+                           <ImageView fx:id="itemImageReport" fitHeight="198.0" fitWidth="346.0" layoutX="91.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" />
+                           <Label fx:id="itemNameLabelReport" layoutX="187.0" layoutY="288.0" prefHeight="35.0" prefWidth="166.0" text="Item Name">
                               <font>
                                  <Font size="19.0" />
                               </font>
@@ -134,8 +153,8 @@
                </SplitPane>
                <Pane prefHeight="200.0" prefWidth="200.0">
                   <children>
-                     <Button layoutX="415.0" layoutY="116.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Approve" />
-                     <Button layoutX="552.0" layoutY="115.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: red;" text="Reject" textFill="WHITE">
+                     <Button onAction="#handleApproveButton" layoutX="415.0" layoutY="116.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: green;" text="Approve" />
+                     <Button  onAction="#handleRejectButton" layoutX="552.0" layoutY="115.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="118.0" style="-fx-background-color: red;" text="Reject" textFill="WHITE">
                         <font>
                            <Font size="24.0" />
                         </font>

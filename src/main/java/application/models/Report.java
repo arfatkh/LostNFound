@@ -1,10 +1,5 @@
 package application.models;
 
-import application.models.Item;
-import application.models.LostItem;
-import application.models.FoundItem;
-
-import java.util.ArrayList;
 import java.util.Date;
 import org.bson.Document;
 
@@ -16,6 +11,8 @@ public class Report {
 
     private Date reportDate;
 
+    private String status; //pending, approved, rejected ,found, lost
+
 
     //constructor
     public Report() {
@@ -25,6 +22,7 @@ public class Report {
         this.reporter = reporter;
         this.type = type;
         this.reportDate = new Date();
+        this.status = "pending";
         //set the date to the current date
         reportDate = Date.from(reportDate.toInstant().plusSeconds(3600));
 
@@ -36,8 +34,10 @@ public class Report {
     public Report(Document document)
     {
         this.reporter = new User((Document) document.get("reporter"));
+        this.reportID = document.getObjectId("_id").toString();;
         this.type = document.getString("type");
         this.reportDate = document.getDate("reportDate");
+        this.status = document.getString("status");
     }
 
 
@@ -49,15 +49,23 @@ public class Report {
         return reportID;
     }
 
+    public String getStatus() {
+        return status;
+    }
     public User getReporter() {
         return reporter;
     }
 
+    public String getType() {
+        return type;
+    }
     public Document toDocument() {
         Document document = new Document();
         document.append("reporter", reporter.toDocument());
         document.append("type", type);
         document.append("reportDate", reportDate);
+        document.append("status", status);
+        document.append("_id", reportID);
         return document;
     }
 

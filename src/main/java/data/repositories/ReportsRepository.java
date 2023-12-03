@@ -10,6 +10,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoClient;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -58,13 +59,15 @@ public class ReportsRepository {
 
 
 
-       public ArrayList<FoundReport> getFoundReports()
+       public ArrayList<FoundReport> getApprovedFoundReports()
        {
               ArrayList<FoundReport> foundReports = new ArrayList<FoundReport>();
 
-              for (Document document : reports.find(Filters.eq("type", "found"))) {
-                foundReports.add(new FoundReport(document));
-              }
+
+              //status approved
+                for (Document document : reports.find(Filters.and(Filters.eq("type", "found"), Filters.eq("status", "approved")))) {
+                    foundReports.add(new FoundReport(document));
+                }
 
               return foundReports;
        }
@@ -80,10 +83,42 @@ public class ReportsRepository {
                   return lostReports;
          }
 
+    public ArrayList<Report> getPendingReports() {
+
+ArrayList<Report> pendingReports = new ArrayList<Report>();
+
+        for (Document document : reports.find(Filters.eq("status", "pending"))) {
+            if (document.getString("type").equals("found")) {
+                pendingReports.add(new FoundReport(document));
+            } else {
+                pendingReports.add(new LostReport(document));
+            }
+        }
+
+        return pendingReports;
+
+    }
+
+    public Report setReportStatus(String reportID, String status) {
+
+//        get by objectID is reportID
+        Document document = reports.find(Filters.eq("_id",new ObjectId(reportID))).first();
 
 
+        if (document == null) {
+            return null;
+        }
 
+        document.replace("status", status);
+        reports.replaceOne(Filters.eq("_id", new ObjectId(reportID)), document);
 
+        if (document.getString("type").equals("found")) {
+            return new FoundReport(document);
+        } else {
+            return new LostReport(document);
+        }
+
+    }
 
 
 //        public  static void main(String[] args) {

@@ -4,11 +4,15 @@ import application.models.*;
 import application.utils.UIutils;
 import business.ReportService;
 import data.imageUpload;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -61,6 +65,22 @@ public class adminDashboardController {
     @FXML
     private Tab foundItemTab;
 
+    @FXML
+    private FXCollections reportList;
+
+    @FXML
+    private Label itemNameLabelReport;
+
+    @FXML
+    private ImageView itemImageReport;
+
+
+    @FXML
+    private Button approveButton;
+
+    @FXML
+    private Button rejectButton;
+
 
 
 
@@ -69,46 +89,112 @@ public class adminDashboardController {
     ReportService reportService = new ReportService();
 
     ArrayList<String> ImageURLs = new ArrayList<String>();
+
+    ArrayList<Report> pendingReports = new ArrayList<Report>();
+
     @FXML
     private void initialize() {
         // Initialize the controller (if needed)
 
+        foundItemContainer.setOnMouseClicked(this::handleItemSelection);
+
+        foundItemContainer.setOnKeyPressed(keyEvent -> {
+           //if up or down arrow is pressed
+            if (keyEvent.getCode().equals(KeyCode.UP) || keyEvent.getCode().equals(KeyCode.DOWN)) {
+                handleItemSelection(keyEvent);
+            }
+        });
+
+
+
+
         foundItemTab.setOnSelectionChanged(event -> {
             if (foundItemTab.isSelected()) {
 
-//                foundItemContainer.getChildren().clear();
+                foundItemContainer.getItems().clear();
+                pendingReports.clear();
+
+
 
                 // Logic for handling found items
-                ArrayList<FoundReport> reports = reportService.getFoundReports();
+                ArrayList<Report> reports = reportService.getPendingReports();
 
-                for (FoundReport report : reports) {
-                    System.out.println(report);
-                    // Create a new item card
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ItemCard.fxml"));
-                        VBox itemCard = loader.load();
+                pendingReports.addAll(reports);
 
-                        itemCardController controller = loader.getController();
+                for (Report report : reports) {
 
-                        controller.setItemData(report.getReportID(), report.getFoundItem().getName(), report.getFoundItem().getDescription(), report.getFoundItem().getImages().get(0), report.getFoundItem().getDateFound(), report.getFoundItem().getLocation());
+                    if (report.getType().equals("found")) {
+                        System.out.println(report);
 
+                        FoundReport foundReport = (FoundReport) report;
+                        foundItemContainer.getItems().add(foundReport.getFoundItem().getName());
+                    } else if (report.getType().equals("lost")) {
+                        System.out.println(report);
 
-//                        foundItemContainer.getChildren().add(itemCard);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        LostReport lostReport = (LostReport) report;
+                        foundItemContainer.getItems().add(lostReport.getLostItem().getName());
                     }
                 }
+
+
 
 
 
             }
         });
 
-//
+
 
 
     }
 
+
+    public void handleItemSelection(Event event) {
+
+        //clear the previous data
+
+
+
+        //get the selected item
+        int selectedIndex = foundItemContainer.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        Report selectedReport = pendingReports.get(selectedIndex);
+
+        String itemName = "";
+        String itemImage = "";
+        String itemDescription = "";
+        String itemLocation = "";
+        String itemDate = "";
+
+
+        if (selectedReport.getType().equals("found")) {
+            FoundReport foundReport = (FoundReport) selectedReport;
+            itemName = foundReport.getFoundItem().getName();
+            itemImage = foundReport.getFoundItem().getImages().get(0);
+            itemDescription = foundReport.getFoundItem().getDescription();
+
+
+        } else if (selectedReport.getType().equals("lost")) {
+            LostReport lostReport = (LostReport) selectedReport;
+            itemName = lostReport.getLostItem().getName();
+            itemImage = lostReport.getLostItem().getImages().get(0);
+            itemDescription = lostReport.getLostItem().getDescription();
+            itemImage = lostReport.getLostItem().getImages().get(0);
+        }
+
+
+
+        itemNameLabelReport.setText(itemName);
+        itemImageReport.setImage(new javafx.scene.image.Image(itemImage));
+//itemDescriptionLabel.setText(itemDescription);
+
+        //get the item id
+
+    }
 
 
 
@@ -118,49 +204,6 @@ public class adminDashboardController {
         System.out.println("User logged in " + user.getEmail());
         usernameLabel.setText(user.getEmail());
     }
-
-    private void handleSubmitReport() {
-        // Logic for handling report submission
-    }
-
-    private void handleGiveFeedback() {
-        // Logic for handling feedback submission
-    }
-
-    private void handleClaimItem(String item) {
-        // Logic for handling item claim
-    }
-
-//    @FXML
-//    private void showPopup(ActionEvent event) {
-//        Button clickedButton = (Button) event.getSource();
-//        HBox parentHBox = (HBox) clickedButton.getParent().getParent(); // Use HBox instead of VBox
-//
-//        Label itemIDLabel = (Label) parentHBox.lookup("#itemID");
-//        String itemID = itemIDLabel.getText().replace("Item ID: ", "");
-//
-//        // Get the item data
-//
-////        ListItem selectedItem = getItemById(itemID);
-//
-//        if (true)// != null) {
-//        {try {
-//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PopupContent.fxml"));
-//                VBox popupContent = loader.load();
-//
-//                PopupContentController controller = loader.getController();
-//                controller.setItemData();
-//
-//                Scene popupScene = new Scene(popupContent, 320, 320);
-//                Stage popupStage = new Stage();
-//                popupStage.setScene(popupScene);
-//                popupStage.setTitle("More Info");
-//                popupStage.show();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     public void openFileChooser() {
         FileChooser fileChooser = new FileChooser();
@@ -263,28 +306,55 @@ public class adminDashboardController {
     }
 
 
-//    public void handleViewFoundItems() {
-//        // Logic for handling found items
-//        System.out.println("Loading found items");
-//
-//        ArrayList<Report> reports = reportService.getReportsByType("lost");
-//
-//        for (Report report : reports) {
-//            System.out.println(report);
-//            // Create a new item card
-//            try {
-//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ItemCard.fxml"));
-//                HBox itemCard = loader.load();
-//
-//                ItemCardController controller = loader.getController();
-//                controller.setItemData(report);
-//
-//                foundItemContainer.getChildren().add(itemCard);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    public void handleApproveButton(ActionEvent actionEvent) {
+
+        int selectedIndex = foundItemContainer.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        Report selectedReport = pendingReports.get(selectedIndex);
+
+        System.out.println("Approved; "+ selectedReport);
+
+        Report res = reportService.setReportStatus(selectedReport.getReportID(), "approved");
+
+        if (res != null) {
+            System.out.println("Report approved successfully");
+            UIutils.showAlert(Alert.AlertType.INFORMATION, "Success", "Report Approved Successfully", "Report approved successfully");
+
+        } else {
+            System.out.println("Report approval failed");
+            UIutils.showAlert(Alert.AlertType.ERROR, "Error", "Report Approval Failed", "Report approval failed");
+        }
+
+    }
+
+    public void handleRejectButton(ActionEvent actionEvent) {
+
+        int selectedIndex = foundItemContainer.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex == -1) {
+            return;
+        }
+
+        Report selectedReport = pendingReports.get(selectedIndex);
+
+        System.out.println("Rejected; "+ selectedReport);
+
+        Report res = reportService.setReportStatus(selectedReport.getReportID(), "rejected");
+
+        if (res != null) {
+            System.out.println("Report rejected successfully");
+            UIutils.showAlert(Alert.AlertType.INFORMATION, "Success", "Report Rejected Successfully", "Report rejected successfully");
+
+        } else {
+            System.out.println("Report rejection failed");
+            UIutils.showAlert(Alert.AlertType.ERROR, "Error", "Report Rejection Failed", "Report rejection failed");
+        }
+
+    }
 
     // Other methods and code
 }

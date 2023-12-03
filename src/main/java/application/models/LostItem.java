@@ -14,7 +14,9 @@ public class LostItem extends Item{
     {
         super(name, location, description, images, "lost",_owner);
         this.lostDate = lostDate;
-        this.owner = new User(_owner.toDocument());
+        if (_owner != null)
+             this.owner = new User(_owner.toDocument());
+        else this.owner = null;
     }
 
 

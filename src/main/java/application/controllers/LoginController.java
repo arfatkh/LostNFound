@@ -41,9 +41,9 @@ public class LoginController {
 
 //        email = "arfat@duck.com";
 //        password = "arfat1";
-
-        email = "admin";
-        password = "admin";
+//
+//        email = "admin";
+//        password = "admin";
 
         if (email.equals("admin") && password.equals("admin")) {
 
