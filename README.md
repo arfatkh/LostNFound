@@ -24,10 +24,9 @@ LostNFound is a software solution designed to streamline the process of managing
 - Reporting and searching for lost items.
 - Claiming found items.
 - Managing user accounts and item records.
+- etc..
 
 
-## Usage
-*Guidelines on how to use the system.*
 
 ## System Architecture 
 <img src="imgs/image_56_200.png" width="auto" align="center" height="400">
@@ -37,10 +36,9 @@ LostNFound is a software solution designed to streamline the process of managing
 <img src="imgs/image_54_193.png" width="auto" align="center" height="800">
 
 
-
 </br>
 
-### Email Notifications
+## Email Notifications
 <img src="imgs/image_33_117.png" alt="Image 117" width="auto" height="600">
 
 
