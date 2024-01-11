@@ -4,6 +4,8 @@
 ## Introduction
 LostNFound is a software solution designed to streamline the process of managing lost and found items. It's tailored for use in various organizational settings like educational institutions and workplaces, enhancing transparency and efficiency in item management.
 
+Semester Project: Software Design and Analysis
+
 ## Tech Used
 - **MongoDB**:for userData and Items.
 - **Cloudinary**:for image storage.
